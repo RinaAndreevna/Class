@@ -1,4 +1,5 @@
 class Student:
+
     def __init__(self, name, surname, gender):
         self.courses_in_prorgess = None
         self.name = name
@@ -7,8 +8,7 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
-        self.average_rating = float()
-        self.courses_attached = []
+
 
     def __str__(self):
         grades_count = 1
@@ -33,18 +33,25 @@ class Student:
         else:
             return 'Ошибка'
 
-        def __lt__(self, other):
-            if not isinstance(other, Student):
-                print('Такое сравнение некорректно')
-                return
-            return self.average_rating < other.average_rating
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print('Такое сравнение некорректно')
+            return
+        return self.average_rating < other.average_rating
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            raise Exception('Такое сравнение некорректно')
+        return self.average_rating == other.average_rating
 
+    def __le__(self, other):
+        if not isinstance(other, Student):
+            raise Exception('Такое сравнение некорректно')
+        return self.average_rating <= other.average_rating
 
 class Mentor:
-    def __init__(self, name, surname):
-        self.grades = None
-        self.name = name
-        self.surname = surname
+    def __init__(self):
+        self.grades = {}
+        super(Mentor, self).__init__()
 
     def __str__(self):
         grades_count = 1
@@ -56,11 +63,21 @@ class Mentor:
 
 
 class Lecturer(Mentor):
-    def __init__(self, name, surname):
-        super().__init__(name, surname)
+    def __init__(self):
+        super(Mentor, self).__init__()
         self.average_rating = float()
         self.grades = {}
-        self.courses_attached = []
+
+    def __repr__(self):
+        grades_count = 0
+        if not self.grades:
+            return 0
+        k=[]
+        for k in grades.values():
+            grades_count += len(self.grades[k])
+        self.average_rating = sum(map(sum, self.grades.values())) / grades_count
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.average_rating}'
+        return res
 
     def __lt__(self, other):
         if not isinstance(other, Lecturer):
@@ -68,6 +85,15 @@ class Lecturer(Mentor):
             return
         return self.average_rating < other.average_rating
 
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            raise Exception('Такое сравнение некорректно')
+        return self.average_rating == other.average_rating
+
+    def __le__(self, other):
+        if not isinstance(other, Student):
+            raise Exception('Такое сравнение некорректно')
+        return self.average_rating <= other.average_rating
 
 class Reviewer(Mentor):
     def __init__(self, name, surname):
@@ -86,7 +112,6 @@ class Reviewer(Mentor):
     def __str__(self):
         res = f'Имя: {self.name}\nФамилия: {self.surname}'
         return res
-
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
@@ -143,28 +168,15 @@ print()
 student_list = [best_student, best_student_1]
 lecturer_list = [best_lecturer, best_lecturer_1]
 
-
-def student_rating(student_list, course_name):
-    sum_all = 0
-    count_all = 0
-    for stud in student_list:
-        if stud.courses_in_progress == [course_name]:
-            sum_all += stud.average_rating
-            count_all += 1
-    average_for_all = sum_all / count_all
-    return average_for_all
-
-
-def lecturer_rating(lecturer_list, course_name):
-    sum_all = 0
-    count_all = 0
-    for lect in lecturer_list:
-        if lect.courses_attached == [course_name]:
-            sum_all += lect.average_rating
-            count_all += 1
-    average_for_all = sum_all / count_all
-    return average_for_all
-
+def average_grade_on_the_course(persons, course):
+    if not isinstance(persons, list):
+        return "Not list"
+    all_average_grade = []
+    for person in persons:
+        all_average_grade.extend(person.average_grade_course.get(course, []))
+    if not all_average_grade:
+        return "По такому курсу ни у кого нет оценок"
+    return round(sum(all_average_grade) / len(all_average_grade)
 
 print(f"Средняя оценка для всех студентов по курсу {'Python'}: {student_rating(student_list, 'Python')}")
 print()
