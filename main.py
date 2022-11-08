@@ -177,9 +177,11 @@ def average_grade_on_the_course(persons, course):
     if not all_average_grade:
         return "По такому курсу ни у кого нет оценок"
     return round(sum(all_average_grade) / len(all_average_grade)
-
+                 
 print(f"Средняя оценка для всех студентов по курсу {'Python'}: {student_rating(student_list, 'Python')}")
 print()
 
-print(f"Средняя оценка для всех лекторов по курсу {'Python'}: {lecturer_rating(lecturer_list, 'Python')}")
+print(f"Средняя оценка для всех лекторов по курсу {'Python'}: {student.gradesg(lecturer_list, 'Python')}")
 print()
+Footer
+
